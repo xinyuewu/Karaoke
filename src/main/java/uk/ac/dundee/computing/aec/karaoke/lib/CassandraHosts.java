@@ -3,7 +3,6 @@ package uk.ac.dundee.computing.aec.karaoke.lib;
 import com.datastax.driver.core.*;
 import java.util.Iterator;
 import java.util.Set;
-import uk.ac.dundee.computing.aec.karaoke.lib.Keyspaces;
 
 public final class CassandraHosts {
 

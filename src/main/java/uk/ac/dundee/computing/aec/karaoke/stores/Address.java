@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package uk.ac.dundee.computing.aec.spotify.stores;
+package uk.ac.dundee.computing.aec.karaoke.stores;
 import com.datastax.driver.mapping.annotations.UDT;
 import com.datastax.driver.mapping.annotations.Field;
-/**
- *
- * @author Salano
- */
+
 @UDT(name = "address", keyspace = "spotify")
 public class Address {
     public void Address(){

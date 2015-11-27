@@ -10,13 +10,13 @@
             <%@include file="includes/header.jsp"%>
             <div id="login-page">
                 <div class="container">
-                    <form class="form-login" action="index.html">
+                    <form class="form-login" action="Login" method="POST">
 
                         <h2 class="form-login-heading">sign in now</h2>
                         <div class="login-wrap">
-                            <input type="text" class="form-control" placeholder="Username" autofocus>
+                            <input type="text" name="username" class="form-control" placeholder="Username" autofocus>
                             <br />
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
                             <hr />
                             <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
                             <div class="registration">

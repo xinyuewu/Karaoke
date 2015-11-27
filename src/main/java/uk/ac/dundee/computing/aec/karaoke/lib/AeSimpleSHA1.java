@@ -1,4 +1,4 @@
-package uk.ac.dundee.computing.aec.spotify.lib;
+package uk.ac.dundee.computing.aec.karaoke.lib;
 
 import java.io.UnsupportedEncodingException; 
 import java.security.MessageDigest; 
