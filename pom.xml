@@ -3,15 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mycompany</groupId>
-    <artifactId>GroupProject</artifactId>
-    <version>groupproject</version>
+    <artifactId>Karaoke</artifactId>
+    <version>karaoke</version>
     <packaging>war</packaging>
 
-    <name>GroupProject</name>
+    <name>Karaoke</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <finalname>Karaoke</finalname>
     </properties>
     
     <dependencies>
