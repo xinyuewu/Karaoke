@@ -18,13 +18,6 @@
     </session-config>
     
     <jsp-config>
-        <jsp-property-group>
-            <description>header and footer settings</description>
-            <url-pattern>/index.jsp</url-pattern>
-
-            <include-prelude>/header.jsp</include-prelude>
-            <include-coda>/footer.jsp</include-coda>
-        </jsp-property-group>
     </jsp-config>
     
     <error-page>
