@@ -14,10 +14,8 @@ import uk.ac.dundee.computing.aec.karaoke.stores.Person;
 import uk.ac.dundee.computing.aec.karaoke.stores.Address;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
 import com.datastax.driver.core.UDTValue;
 import com.datastax.driver.core.exceptions.QueryExecutionException;
 import com.datastax.driver.mapping.MappingManager;
@@ -86,38 +84,28 @@ public class UserModel {
         return false;
     }
 
-    public Hashtable getUser(String username) {
+    public Person getUser(String username) {
         ResultSet record = null;
-        Hashtable rs = new Hashtable();
-        Set<String> emails = new HashSet<>();
-        //Map addresses = new HashMap();
-        String value = "";
         Session session = cluster.connect("spotify");
+        Person p = new Person();
         UDTMapper<Address> mapper = new MappingManager(session).udtMapper(Address.class);
         PreparedStatement ps = session.prepare("select * from userprofiles where login =?");
         BoundStatement boundStatement = new BoundStatement(ps);
         record = session.execute(boundStatement.bind(username));
         if (!record.isExhausted()) {
             for (Row row : record) {
-                rs.put("firstname", row.getString("first_name"));
-                rs.put("lastname", row.getString("last_name"));
-                rs.put("age", row.getInt("age"));
-                rs.put("telephone", (row.getString("telephone") == null ? "" : row.getString("telephone")));
-                emails = row.getSet("email", String.class);
-                Iterator it = emails.iterator();
-                while (it.hasNext()) {
-                    value += (String) it.next();
-                }
-                rs.put("email", value);
+                p.setFirstname(row.getString("first_name"));
+                p.setLastname(row.getString("last_name"));
+                p.setUsername(username);
+                p.setAge(row.getInt("age"));
+                p.setEmail(row.getSet("email", String.class));
                 Map<String, UDTValue> addresses = row.getMap("addresses", String.class, UDTValue.class);
-                for (String key : addresses.keySet()) {
-                    Address address = mapper.fromUDT(addresses.get(key));
-                    rs.put("address", address);
-                }
+                Address address = mapper.fromUDT(addresses.get("home"));
+                p.setAddress(address);
             }
         }
         session.close();
-        return rs;
+        return p;
     }
 
     public void updateUser(String username, String firstname, String lastname, int age, String email, String telephone, String martial_status, String street, String city, String zip) {

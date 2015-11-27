@@ -75,8 +75,7 @@ public class Music extends HttpServlet {
                     Track t = mm.getTrack(UUID.fromString(args[2]));
                     if (t != null) {
                         rd = request.getRequestDispatcher("../track.jsp");
-                        request.setAttribute("track", args[2]);
-                        request.setAttribute("type", t.getType());
+                        request.setAttribute("track", t);
                         rd.forward(request, response);
                     } else {
                         response.sendRedirect("/Karaoke/Music");

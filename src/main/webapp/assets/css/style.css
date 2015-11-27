@@ -1928,7 +1928,33 @@ label {
 }
 
 /* TRACKS */
+.audio-container{
+    margin-top: 100px;
+    width: 100%;
+    background: #fff;
+    padding: 2.5% 2.5%;
+     border-radius:1em;
+}
 
+.audio-container audio{
+    width:40%;
+    margin-left:30%;
+    margin-top:3em;
+}
+
+.audio-heading{
+    width:40%;
+    margin-left:30%;
+    padding: 25px 20px;
+    text-align: center;
+    background: #68dff0;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
 
 
 /*LOGIN CONFIGURATION PAGE*/

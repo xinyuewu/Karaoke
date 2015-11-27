@@ -3,7 +3,7 @@
     LoggedIn li = (LoggedIn) session.getAttribute("LoggedIn");
     String username = "";
     if(li!=null)
-         username = "Hello " + li.getUsername();
+         username = li.getUsername();
 %>
 <header class="header black-bg">
     <a href="#" class="logo"><b>Cassandrify!</b></a>
@@ -24,7 +24,7 @@
     </div>
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
-            <li id="user"><%=username%></li>
+            <li id="user">Hello <%=username%></li>
             <li><a class="logout" href="logout.jsp">Logout</a></li>
         </ul>
     </div>

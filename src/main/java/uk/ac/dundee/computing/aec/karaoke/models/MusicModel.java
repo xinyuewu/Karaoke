@@ -76,7 +76,7 @@ public class MusicModel {
     
     public Track getTrack(UUID trackID){
         Session session = cluster.connect("spotify");
-        PreparedStatement getTrack = session.prepare("SELECT track, trackLength, type from Tracks where trackID = ?");
+        PreparedStatement getTrack = session.prepare("SELECT track, trackLength, name, type from Tracks where trackID = ?");
         BoundStatement bsInsertPic = new BoundStatement(getTrack);
         ResultSet rs = null;
         rs = session.execute(bsInsertPic.bind(trackID));
@@ -86,6 +86,8 @@ public class MusicModel {
              Track track = new Track();
              for (Row row : rs) {
                track.setTrack(row.getBytes("track"), row.getInt("trackLength"), row.getString("type"));
+               track.setName(row.getString("name"));
+               track.setUUID(trackID);
             }//end foreach
             return track;
         }//end if

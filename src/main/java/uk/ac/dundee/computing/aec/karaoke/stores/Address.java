@@ -13,7 +13,7 @@ public class Address {
     @Field(name = "city")
     private String city;
     @Field(name = "zip")
-    private int zip ;
+    private String zip ;
     
     public void setStreet(String street){
         this.street = street;
@@ -21,7 +21,7 @@ public class Address {
     public void setCity(String city){
         this.city = city;
     }
-    public void setZip(int zip){
+    public void setZip(String zip){
         this.zip = zip;
     }
     
@@ -31,7 +31,7 @@ public class Address {
     public String getCity(){
         return this.city;
     }
-    public int getZip(){
+    public String getZip(){
         return this.zip;
     }
 }

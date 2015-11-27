@@ -20,7 +20,6 @@ public final class Keyspaces {
                     + "      login text PRIMARY KEY,\n"
                     + "     password text,\n"
                     + "      age int,\n"
-                    + "      telephone text,\n"
                     + "      first_name text,\n"
                     + "      last_name text,\n"
                     + "      email set<text>,\n"
