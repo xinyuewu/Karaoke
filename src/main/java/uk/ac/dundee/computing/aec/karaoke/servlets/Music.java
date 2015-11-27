@@ -27,33 +27,33 @@ import uk.ac.dundee.computing.aec.karaoke.lib.Convertors;
 @WebServlet(name = "Music", urlPatterns = {
     "/Music",
     "/Music/*",
-    "/Fetch/*"
+    "/Fetch/*",
+    "/Upload"
 })
 
 public class Music extends HttpServlet {
 
-    private Cluster cluster;
+    private Cluster cluster = null;
     private HashMap CommandsMap = new HashMap();
-
-    public Music() {
-        super();
-        CommandsMap.put("Music", 1);
-        CommandsMap.put("Fetch", 2);
-    }
+    private MusicModel mm;
+    private String[] args;
+    private RequestDispatcher rd;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         cluster = CassandraHosts.getCluster();
+        mm = new MusicModel();
+        CommandsMap.put("Music", 1);
+        CommandsMap.put("Fetch", 2);
+        CommandsMap.put("Upload", 3);
     }//end init()
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String args[] = Convertors.SplitRequestPath(request);
-        MusicModel mm = new MusicModel();
+        args = Convertors.SplitRequestPath(request);
         mm.setCluster(cluster);
-        RequestDispatcher rd;
 
         int command;
         try {
@@ -70,10 +70,8 @@ public class Music extends HttpServlet {
                     LinkedList<Track> songs = mm.getTrackList();
                     request.setAttribute("tracks", songs);
                     rd.forward(request, response);
-                }
-
-                /* /Music/track */
-               else if (args.length == 3) {
+                } 
+                /* /Music/track */ else if (args.length == 3) {
                     Track t = mm.getTrack(UUID.fromString(args[2]));
                     if (t != null) {
                         rd = request.getRequestDispatcher("../track.jsp");
@@ -81,12 +79,20 @@ public class Music extends HttpServlet {
                         request.setAttribute("type", t.getType());
                         rd.forward(request, response);
                     } else {
-                        response.sendRedirect("/GroupProject/");
+                        response.sendRedirect("/Karaoke/Music");
                     }
                 }
                 break;
+
+            /* /Fetch/trackID */
             case 2:
                 sendTrackData(args[2], response);
+                break;
+
+            /* /Upload */
+            case 3:
+                rd = request.getRequestDispatcher("/upload.jsp");
+                rd.forward(request, response);
                 break;
         }//end switch
     }//end doGet()
@@ -94,28 +100,44 @@ public class Music extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        for (Part part : request.getParts()) {
-            String type = part.getContentType();
-            System.out.println(type);
-            String filename = part.getSubmittedFileName();
-            InputStream is = request.getPart(part.getName()).getInputStream();
-            Tika tika = new Tika();
-            String result = tika.detect(filename);
-            int i = is.available();
-            byte[] b = new byte[i + 1];
-            is.read(b);
-            MusicModel mm = new MusicModel();
-            mm.setCluster(cluster);
-            mm.insertTrack(b, type, filename, "Scott", part.getName());
-            is.close();
-        }//end for loop
+
+        args = Convertors.SplitRequestPath(request);
+        mm.setCluster(cluster);
+
+        int command;
+        try {
+            command = (Integer) CommandsMap.get(args[1]);
+        } catch (Exception et) {
+            error("Bad request", response);
+            return;
+        }
+        switch (command) {
+            /* /Music */
+            case 1:
+                for (Part part : request.getParts()) {
+                    String type = part.getContentType();
+                    System.out.println(type);
+                    String filename = part.getSubmittedFileName();
+                    InputStream is = request.getPart(part.getName()).getInputStream();
+                    Tika tika = new Tika();
+                    String result = tika.detect(filename);
+                    int i = is.available();
+                    byte[] b = new byte[i + 1];
+                    is.read(b);
+                    MusicModel mm = new MusicModel();
+                    mm.setCluster(cluster);
+                    mm.insertTrack(b, type, filename, "Scott", part.getName());
+                    is.close();
+                }//end for loop
+                break;
+        }//end switch
     }//end doPost()
 
     @Override
     public String getServletInfo() {
         return "Short description";
     }//end getServletInfo()
-    
+
     //Displays a single image
     private void sendTrackData(String Image, HttpServletResponse response) throws ServletException, IOException {
         MusicModel mm = new MusicModel();

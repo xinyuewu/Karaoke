@@ -26,6 +26,16 @@ public final class Keyspaces {
                     + "      email set<text>,\n"
                     + "      addresses  map<text, frozen <spotify.address>>\n"
                     + "  );";
+             String CreateTrackTable = "CREATE TABLE if not exists spotify.Tracks ("
+                    + " user varchar,"
+                    + " trackID uuid, "
+                    + " interaction_time timestamp,"
+                    + " track blob,"
+                    + " trackLength int,"
+                    + " type  varchar,"
+                    + " name  varchar,"
+                    + " PRIMARY KEY (trackID)"
+                    + ")";
 
             Session session = c.connect();
             System.out.println("Creating keyspace ");
@@ -55,7 +65,15 @@ public final class Keyspaces {
                 session.execute(cqlQuery);
                 System.out.println("Created userprofiles table");
             } catch (Exception et) {
-                System.out.println("Can't create serprofiles table" + et);
+                System.out.println("Can't create userprofiles table" + et);
+            }
+            System.out.println("Creating tracks table");
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreateTrackTable);
+                session.execute(cqlQuery);
+                System.out.println("Created tracks table");
+            } catch (Exception et) {
+                System.out.println("Can't create tracks table" + et);
             }
             session.close();
         } catch (Exception et) {

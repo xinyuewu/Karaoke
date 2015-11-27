@@ -39,7 +39,7 @@ public class MusicModel {
             Boolean success = (new File("/var/tmp/instagrim/")).mkdirs();
             FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
             output.write(b);
-            Session session = cluster.connect("project");
+            Session session = cluster.connect("spotify");
             PreparedStatement psInsertTrack = session.prepare("insert into Tracks ( trackID, track, user, interaction_time, trackLength, type, name) values(?,?,?,?,?,?,?)");
             BoundStatement bsInsertPic = new BoundStatement(psInsertTrack);
             Date DateAdded = new Date();
@@ -53,7 +53,7 @@ public class MusicModel {
 
     public LinkedList<Track> getTrackList() {
         LinkedList<Track>tracks = new LinkedList<>();
-        Session session = cluster.connect("project");
+        Session session = cluster.connect("spotify");
         PreparedStatement getTracks = session.prepare("SELECT trackID, name from Tracks");
         BoundStatement bsInsertPic = new BoundStatement(getTracks);
         Date DateAdded = new Date();
@@ -75,7 +75,7 @@ public class MusicModel {
     }
     
     public Track getTrack(UUID trackID){
-        Session session = cluster.connect("project");
+        Session session = cluster.connect("spotify");
         PreparedStatement getTrack = session.prepare("SELECT track, trackLength, type from Tracks where trackID = ?");
         BoundStatement bsInsertPic = new BoundStatement(getTrack);
         ResultSet rs = null;

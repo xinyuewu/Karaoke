@@ -20,7 +20,7 @@ import uk.ac.dundee.computing.aec.karaoke.stores.LoggedIn;
 @WebServlet(name = "Register", urlPatterns = {"/Register", "/Login"})
 public class User extends HttpServlet {
 
-    Cluster cluster = null;
+    private Cluster cluster = null;
     private UserModel us;
     private final HashMap URLmap = new HashMap();
     private String[] args;
@@ -28,7 +28,6 @@ public class User extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
         us = new UserModel();
         URLmap.put("Register", 1);
@@ -102,7 +101,7 @@ public class User extends HttpServlet {
                    response.sendRedirect("login.jsp");
                else{
                     if(setLoggedInUser(uname, pword, request))
-                        response.sendRedirect("/Karaoke/");
+                        response.sendRedirect("/Karaoke/Music");
                     else
                         response.sendRedirect("login.jsp");
                }
