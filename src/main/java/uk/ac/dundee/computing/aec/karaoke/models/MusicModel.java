@@ -79,12 +79,25 @@ public class MusicModel {
     }
 
     public LinkedList<Track> getTopTracks() {
-        LinkedList<Track> tracks = new LinkedList<>();
+       LinkedList<Track> tracks = new LinkedList<>();
         Session session = cluster.connect("spotify");
-
-        PreparedStatement getTracks = session.prepare("SELECT trackID, total from Likes");
+        PreparedStatement getTracks = session.prepare("SELECT trackID, total, name from Likes");
         BoundStatement bsInsertPic = new BoundStatement(getTracks);
-        session.execute(bsInsertPic);
+        ResultSet rs ;
+        rs = session.execute(bsInsertPic);
+        session.close();
+        if (!rs.isExhausted()) {
+            for (Row row : rs) {
+                Track track = new Track();
+                UUID UUID = row.getUUID("trackID");
+                track.setUUID(UUID);
+                track.setName(row.getString("name"));
+                tracks.add(track);
+            }//end foreach
+        }//end if
+        else {
+            return null;
+        }
         return tracks;
     }
 
