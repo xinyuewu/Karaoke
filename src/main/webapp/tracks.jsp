@@ -10,16 +10,29 @@
     <body>
         <section class="container">
             <%@include file="includes/header.jsp"%>
-            <%java.util.LinkedList<Track> tracks = (java.util.LinkedList<Track>) request.getAttribute("tracks");%>
+           <%java.util.LinkedList<Track> tracks = (java.util.LinkedList<Track>) request.getAttribute("tracks");%>
+            <%java.util.LinkedList<Track> topTracks = (java.util.LinkedList<Track>) request.getAttribute("topTracks");%>
+            
             <div class="track-list">
-                <h2 class="form-login-heading">Select A Track</h2>
+                <h2 class="form-login-heading">All tracks</h2>
                 <div class="track-wrap">
                     <%for (Track t : tracks) {
                     %>
                     <a href="/Karaoke/Music/<%=t.getSUUID()%>"><%=t.getName()%></a><br />
                     <%}%>
                 </div>          
-            </div>	  
+            </div>
+                <br />
+                
+                <div class="track-list">
+                <h2 class="form-login-heading">Top tracks</h2>
+                <div class="track-wrap">
+                    <%for (Track t : topTracks) {
+                    %>
+                    <a href="/Karaoke/Music/<%=t.getSUUID()%>"><%=t.getName()%></a><br />
+                    <%}%>
+                </div>          
+            </div>
         </section>
     </body>
 </html>
