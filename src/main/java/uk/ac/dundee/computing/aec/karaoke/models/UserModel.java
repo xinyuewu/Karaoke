@@ -109,7 +109,6 @@ public class UserModel {
     }
 
     public void updateUser(String username, String firstname, String lastname, String email, String street, String city, String zip) {
-        System.out.println(username + "\n"+ firstname + "\n" + lastname + "\n" + email + "\n" + street + "\n"+ city + "\n"+zip + "\n");
         Session session = cluster.connect("spotify");
         Set<String> emails = new HashSet<>();
         emails.add(email);

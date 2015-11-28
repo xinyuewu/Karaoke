@@ -25,7 +25,7 @@
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
             <li id="user">Hello <%=username%></li>
-            <li><a class="logout" href="logout.jsp">Logout</a></li>
+            <li><a class="logout" href="/Karaoke/logout.jsp">Logout</a></li>
         </ul>
     </div>
 </header>

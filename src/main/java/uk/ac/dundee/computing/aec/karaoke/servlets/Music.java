@@ -20,15 +20,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import uk.ac.dundee.computing.aec.karaoke.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.karaoke.lib.Convertors;
+import uk.ac.dundee.computing.aec.karaoke.stores.Likes;
+import uk.ac.dundee.computing.aec.karaoke.stores.LoggedIn;
 
 @WebServlet(name = "Music", urlPatterns = {
     "/Music",
     "/Music/*",
     "/Fetch/*",
-    "/Upload"
+    "/Upload",
+    "/Like/*"
 })
 
 public class Music extends HttpServlet {
@@ -46,6 +50,7 @@ public class Music extends HttpServlet {
         CommandsMap.put("Music", 1);
         CommandsMap.put("Fetch", 2);
         CommandsMap.put("Upload", 3);
+        CommandsMap.put("Like", 4);
     }//end init()
 
     @Override
@@ -66,12 +71,18 @@ public class Music extends HttpServlet {
             /* /Music */
             case 1:
                 if (args.length == 2) {
-                    rd = request.getRequestDispatcher("/tracks.jsp");
-                    LinkedList<Track> songs = mm.getTrackList();
-                    request.setAttribute("tracks", songs);
-                    rd.forward(request, response);
-                } 
-                /* /Music/track */ else if (args.length == 3) {
+                        
+                        LinkedList<Track> songs = mm.getTrackList();
+                        LinkedList<Track> top5 = mm.getTopTracks();
+                        request.setAttribute("tracks", songs);
+                        if(songs != null)
+                            rd = request.getRequestDispatcher("/tracks.jsp");
+                        else
+                            rd = request.getRequestDispatcher("/Upload");
+                        rd.forward(request, response);
+                 
+
+                } /* /Music/track */ else if (args.length == 3) {
                     Track t = mm.getTrack(UUID.fromString(args[2]));
                     if (t != null) {
                         rd = request.getRequestDispatcher("../track.jsp");
@@ -93,6 +104,11 @@ public class Music extends HttpServlet {
                 rd = request.getRequestDispatcher("/upload.jsp");
                 rd.forward(request, response);
                 break;
+
+            case 4:
+                Likes l = mm.getLikes(UUID.fromString(args[2]));
+                response.getWriter().write("" + l.getTotalLikes());
+                break;
         }//end switch
     }//end doGet()
 
@@ -102,7 +118,6 @@ public class Music extends HttpServlet {
 
         args = Convertors.SplitRequestPath(request);
         mm.setCluster(cluster);
-
         int command;
         try {
             command = (Integer) CommandsMap.get(args[1]);
@@ -128,6 +143,15 @@ public class Music extends HttpServlet {
                     mm.insertTrack(b, type, filename, "Scott", part.getName());
                     is.close();
                 }//end for loop
+                response.sendRedirect("/Karaoke/Music");
+                break;
+
+            /* /Like/trackID */
+            case 4:
+                HttpSession session = request.getSession();
+                LoggedIn li = (LoggedIn) session.getAttribute("LoggedIn");
+                Track t = mm.getTrack(UUID.fromString(args[2]));
+                mm.insertLike(UUID.fromString(args[2]), li.getUsername(), t.getName());
                 break;
         }//end switch
     }//end doPost()

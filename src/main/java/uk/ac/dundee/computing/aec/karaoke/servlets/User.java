@@ -92,7 +92,7 @@ public class User extends HttpServlet {
                 } else {
                     us.RegisterUser(username, password, firstname, lastname, email, age, street, city, zip);
                     if (setLoggedInUser(username, password, request)) {
-                        response.sendRedirect("/Karaoke/");
+                        response.sendRedirect("/Karaoke/Music");
                     } else {
                         response.sendRedirect("register.jsp");
                     }
@@ -121,7 +121,6 @@ public class User extends HttpServlet {
                     us.updateUser(username, firstname, lastname, email, street, city, zip);
                     response.sendRedirect("/Karaoke/User/" + username);
                 }
-
         }//end switch
     }//end doPost()
 
