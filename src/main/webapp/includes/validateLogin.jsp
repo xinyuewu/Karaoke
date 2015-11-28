@@ -1,4 +1,6 @@
+<%@page import="uk.ac.dundee.computing.aec.karaoke.stores.LoggedIn"%>
 <%
-if(session.getAttribute("LoggedIn") == null)
-    response.sendRedirect("login.jsp");
+ LoggedIn l = (LoggedIn) session.getAttribute("LoggedIn");
+ if(l == null)
+     response.sendRedirect("/Karaoke/login.jsp");
 %>

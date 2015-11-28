@@ -108,7 +108,8 @@ public class UserModel {
         return p;
     }
 
-    public void updateUser(String username, String firstname, String lastname, int age, String email, String telephone, String martial_status, String street, String city, String zip) {
+    public void updateUser(String username, String firstname, String lastname, String email, String street, String city, String zip) {
+        System.out.println(username + "\n"+ firstname + "\n" + lastname + "\n" + email + "\n" + street + "\n"+ city + "\n"+zip + "\n");
         Session session = cluster.connect("spotify");
         Set<String> emails = new HashSet<>();
         emails.add(email);
@@ -116,9 +117,9 @@ public class UserModel {
         UserType addressType = cluster.getMetadata().getKeyspace("spotify").getUserType("address");
         UDTValue address = addressType.newValue().setString("street", street).setString("city", city).setString("zip", zip);
         map.put("home", address);
-        PreparedStatement ps = session.prepare("update userprofiles  set first_name = ?,last_name = ?,email = ?,age = ?, telephone= ?, addresses = ? where login = ?");
+        PreparedStatement ps = session.prepare("update userprofiles  set first_name = ?, last_name = ?, email = ?, addresses = ? where login = ?");
         BoundStatement boundStatement = new BoundStatement(ps);
-        session.execute(boundStatement.bind( firstname, lastname, emails, age, telephone, map, username));
+        session.execute(boundStatement.bind( firstname, lastname, emails, map, username));
     }
 
     public java.util.LinkedList<Person> getUsers() {

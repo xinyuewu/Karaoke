@@ -51,20 +51,21 @@ public class User extends HttpServlet {
             return;
         }//end catch
 
-        switch (command) {
-            case 1:
-                //sanitize inputs
-                String firstname = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("firstname"));
-                String lastname = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("lastname"));
-                String username = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("username"));
-                String password = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("password"));
-                String cpassword = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("cpassword"));
-                String email = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("email"));
-                String age = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("age"));
-                String street = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("street"));
-                String city = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("city"));
-                String zip = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("zip"));
+        //sanitize inputs
+        String firstname = sanitise(request.getParameter("firstname"));
+        String lastname = sanitise(request.getParameter("lastname"));
+        String username = sanitise(request.getParameter("username"));
+        String password = sanitise(request.getParameter("password"));
+        String cpassword = sanitise(request.getParameter("cpassword"));
+        String email = sanitise(request.getParameter("email"));
+        String age = sanitise(request.getParameter("age"));
+        String street = sanitise(request.getParameter("street"));
+        String city =sanitise(request.getParameter("city"));
+        String zip =sanitise(request.getParameter("zip"));
 
+        switch (command) {
+            /* /Register */
+            case 1:
                 if (firstname == null || lastname == null || username == null || password == null
                         || cpassword == null || email == null || age == null || street == null || city == null || zip == null) {
                     rd.forward(request, response);
@@ -97,6 +98,7 @@ public class User extends HttpServlet {
                     }
                 }
                 break;
+            /* /Login */
             case 2:
                 String uname = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("username"));
                 String pword = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(request.getParameter("password"));
@@ -110,6 +112,16 @@ public class User extends HttpServlet {
                     }
                 }
                 break;
+            /* /User */
+            case 3:
+                if (firstname == null || lastname == null || email == null || username == null
+                        || street == null || zip == null || city == null || age == null) {
+                    response.sendRedirect("/Karaoke/");
+                } else {
+                    us.updateUser(username, firstname, lastname, email, street, city, zip);
+                    response.sendRedirect("/Karaoke/User/" + username);
+                }
+
         }//end switch
     }//end doPost()
 
@@ -134,10 +146,14 @@ public class User extends HttpServlet {
                     break;
                 } else {
                     String username = args[2];
-                     Person p =us.getUser(username);
-                     rd = request.getRequestDispatcher("/profile.jsp");
-                     request.setAttribute("person", p);
-                     rd.forward(request, response);
+                    if (us.userExist(username)) {
+                        Person p = us.getUser(username);
+                        rd = request.getRequestDispatcher("/profile.jsp");
+                        request.setAttribute("person", p);
+                        rd.forward(request, response);
+                    }
+                    else
+                        response.sendRedirect("/Karaoke/");
                     break;
                 }
         }//end switch
@@ -169,4 +185,8 @@ public class User extends HttpServlet {
             return false;
         }
     }//end setLoggedInUser
+
+    private String sanitise(String input) {
+        return org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(input);
+    }
 }//end class
