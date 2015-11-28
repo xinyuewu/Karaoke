@@ -39,7 +39,7 @@ public final class Keyspaces {
             String CreateLikeTable = "CREATE TABLE if not exists spotify.Likes ("
                     + " user set<text>, \n"
                     + " trackID uuid, \n"
-                    + " name  varchar, \n"
+                    + " name varchar, \n"
                     + " total int, \n"
                     + " PRIMARY KEY (trackID)"
                     + ") WITH CLUSTERING ORDER BY (total) DESC";
