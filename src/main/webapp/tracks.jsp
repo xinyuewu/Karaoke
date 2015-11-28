@@ -29,7 +29,9 @@
                 <div class="track-wrap">
                     <%for (Track t : topTracks) {
                     %>
-                    <a href="/Karaoke/Music/<%=t.getSUUID()%>"><%=t.getName()%></a><br />
+                    <a href="/Karaoke/Music/<%=t.getSUUID()%>"><%=t.getName()%></a> 
+                    Likes: <%=t.getLikes().getTotalLikes()%>
+                    <br />
                     <%}%>
                 </div>          
             </div>
