@@ -73,8 +73,9 @@ public class Music extends HttpServlet {
                 if (args.length == 2) {
                         
                         LinkedList<Track> songs = mm.getTrackList();
-                        LinkedList<Track> top5 = mm.getTopTracks();
+                        LinkedList<Track> topTracks = mm.getTopTracks();
                         request.setAttribute("tracks", songs);
+                        request.setAttribute("topTracks", songs);
                         if(songs != null)
                             rd = request.getRequestDispatcher("/tracks.jsp");
                         else
