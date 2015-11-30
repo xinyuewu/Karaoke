@@ -11,7 +11,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import uk.ac.dundee.computing.aec.karaoke.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.karaoke.lib.Convertors;
+import uk.ac.dundee.computing.aec.karaoke.models.PlayModel;
 import uk.ac.dundee.computing.aec.karaoke.stores.Likes;
 import uk.ac.dundee.computing.aec.karaoke.stores.LoggedIn;
 
@@ -32,7 +36,9 @@ import uk.ac.dundee.computing.aec.karaoke.stores.LoggedIn;
     "/Music/*",
     "/Fetch/*",
     "/Upload",
-    "/Like/*"
+    "/Like/*",
+    "/Play",
+    "/Play/*"
 })
 
 public class Music extends HttpServlet {
@@ -51,66 +57,102 @@ public class Music extends HttpServlet {
         CommandsMap.put("Fetch", 2);
         CommandsMap.put("Upload", 3);
         CommandsMap.put("Like", 4);
+        CommandsMap.put("Play", 5);
     }//end init()
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        args = Convertors.SplitRequestPath(request);
-        mm.setCluster(cluster);
+        LoggedIn li = (LoggedIn) request.getSession().getAttribute("LoggedIn");
+        if (li == null) {
+            response.sendRedirect("/Karaoke/login.jsp");
+        } else {
 
-        int command;
-        try {
-            command = (Integer) CommandsMap.get(args[1]);
-        } catch (Exception et) {
-            error("Bad request", response);
-            return;
-        }
-        switch (command) {
-            /* /Music */
-            case 1:
-                if (args.length == 2) {
-                        
+            args = Convertors.SplitRequestPath(request);
+            mm.setCluster(cluster);
+
+            int command;
+            try {
+                command = (Integer) CommandsMap.get(args[1]);
+            } catch (Exception et) {
+                error("Bad request", response);
+                return;
+            }
+            switch (command) {
+                /* /Music */
+                case 1:
+                    if (args.length == 2) {
+
                         LinkedList<Track> songs = mm.getTrackList();
                         LinkedList<Track> topTracks = mm.getTopTracks();
                         request.setAttribute("tracks", songs);
-                        request.setAttribute("topTracks", songs);
-                        if(songs != null)
+                        request.setAttribute("topTracks", topTracks);
+                        if (songs != null) {
                             rd = request.getRequestDispatcher("/tracks.jsp");
-                        else
+                        } else {
                             rd = request.getRequestDispatcher("/Upload");
+                        }
                         rd.forward(request, response);
-                 
 
-                } /* /Music/track */ else if (args.length == 3) {
-                    Track t = mm.getTrack(UUID.fromString(args[2]));
-                    if (t != null) {
-                        rd = request.getRequestDispatcher("../track.jsp");
-                        request.setAttribute("track", t);
-                        rd.forward(request, response);
-                    } else {
-                        response.sendRedirect("/Karaoke/Music");
+                    } /* /Music/track */ else if (args.length == 3) {
+                        Track t = mm.getTrack(UUID.fromString(args[2]));
+                        if (t != null) {
+                            rd = request.getRequestDispatcher("../track.jsp");
+                            request.setAttribute("track", t);
+                            rd.forward(request, response);
+                        } else {
+                            response.sendRedirect("/Karaoke/Music");
+                        }
                     }
-                }
-                break;
+                    break;
 
-            /* /Fetch/trackID */
-            case 2:
-                sendTrackData(args[2], response);
-                break;
+                /* /Fetch/trackID */
+                case 2:
+                    sendTrackData(args[2], response);
+                    break;
 
-            /* /Upload */
-            case 3:
-                rd = request.getRequestDispatcher("/upload.jsp");
-                rd.forward(request, response);
-                break;
+                /* /Upload */
+                case 3:
+                    rd = request.getRequestDispatcher("/upload.jsp");
+                    rd.forward(request, response);
+                    break;
 
-            case 4:
-                Likes l = mm.getLikes(UUID.fromString(args[2]));
-                response.getWriter().write("" + l.getTotalLikes());
-                break;
-        }//end switch
+                case 4:
+                    Likes l = mm.getLikes(UUID.fromString(args[2]));
+                    if (l == null) {
+                        response.getWriter().write("" + 0);
+                    } else {
+                        response.getWriter().write("" + l.getTotalLikes());
+                    }
+                    break;
+
+                /* /Play */
+                case 5:
+                    PlayModel pm = new PlayModel();
+                    pm.setCluster(cluster);
+                    HashMap map = pm.getPlayEvents(UUID.fromString(args[2]));
+                    Set set = map.entrySet();
+                    Iterator iterator = set.iterator();
+                    PrintWriter out = response.getWriter();
+                    StringBuilder jsonStr = new StringBuilder();
+                    jsonStr.append("[");
+                    while (iterator.hasNext()) {
+                        Map.Entry mentry = (Map.Entry) iterator.next();
+                        String strArray[] = mentry.getKey().toString().split("_");
+                        jsonStr.append(" {\" label \" :" + "\"" + strArray[1].toString() + "\",");
+                        jsonStr.append("\" value\" :" + "\"" + mentry.getValue().toString() + "\"},");
+                    }
+                    jsonStr.setLength(jsonStr.length() - 1);
+                    jsonStr.append("]");
+                    if (jsonStr.length() == 1) {
+                        out.print("");
+                    } else {
+                        out.println(jsonStr);
+                    }
+                    break;
+            }//end switch
+        }
     }//end doGet()
 
     @Override
@@ -153,6 +195,13 @@ public class Music extends HttpServlet {
                 LoggedIn li = (LoggedIn) session.getAttribute("LoggedIn");
                 Track t = mm.getTrack(UUID.fromString(args[2]));
                 mm.insertLike(UUID.fromString(args[2]), li.getUsername(), t.getName());
+                break;
+
+            /* /Play/* */
+            case 5:
+                PlayModel pm = new PlayModel();
+                pm.setCluster(cluster);
+                pm.insertPlay(UUID.fromString(request.getParameter("track")), "TestUser");
                 break;
         }//end switch
     }//end doPost()
