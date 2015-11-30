@@ -40,9 +40,15 @@ public class Stats extends HttpServlet {
         } else {
             mm.setCluster(cluster);
             LinkedList<Track> topTracks = mm.getTopTracks();
-            rd = request.getRequestDispatcher("timeseries.jsp");
-            request.setAttribute("tracks", topTracks);
-            rd.forward(request, response);
+            if (topTracks != null) {
+                rd = request.getRequestDispatcher("timeseries.jsp");
+                request.setAttribute("tracks", topTracks);
+                rd.forward(request, response);
+            } else {
+                rd = request.getRequestDispatcher("/Upload");
+                rd.forward(request, response);
+            }
+
         }
     }
 

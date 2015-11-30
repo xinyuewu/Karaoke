@@ -20,15 +20,21 @@
                     <%}%>
                 </div>          
             </form>
-
-            <div id="curve_chart" style="width: 900px; height: 500px"></div>
-            <div id="chartContainer"></div>
+         
+              
+            <div id="curve_chart"  style="width: 300px; height: 50px;   "></div>
+          
+            <div id="chartContainer" style=" text-align: center; "></div>
+              
             <script src="/Karaoke/assets/js/jquery.js"></script>
             <script  src="/Karaoke/assets/fusionchart/fusioncharts.js"></script>
             <script src="/Karaoke/assets/fusionchart/fusioncharts.charts.js"></script>
             <script src="/Karaoke/assets/fusionchart/themes/fusioncharts.theme.zune.js"></script>
             <script src="/Karaoke/assets/js/app.js"></script>
             <script src="/Karaoke/assets/js/timeseriesFunctions.js"></script>
+            <br>
         </section>
+                <br>
+                <%//@include file="footer.jsp"%>   
     </body>
 </html>

@@ -9,6 +9,8 @@
     <body>
         <section class="container">
             <%@include file="includes/header.jsp"%>
+           
         </section>
+             
     </body>
 </html>

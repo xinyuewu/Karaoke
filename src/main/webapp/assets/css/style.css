@@ -12,10 +12,10 @@ Premium: http://www.gridgum.com
 /* BASIC THEME CONFIGURATION */
 body {
     color: #797979;
-    background: #f2f2f2;
+    background: #A4AABA;
     font-family: 'Ruda', sans-serif;
-    padding: 0px !important;
-    margin: 0px !important;
+  //  padding: 0px !important;
+   // margin: 0px !important;
     font-size:13px;
 }
 
@@ -413,7 +413,12 @@ ul.sidebar-menu li a.active i {
 }
 
 .black-bg {
-    background: #ffd777;
+    background: #ffd111;
+    height: 50px;
+    background-image: url("../img/karaheader.png");
+    background-position: center center;
+    background-size: cover;
+    //background: #ffd000;
     border-bottom: 1px solid #c9aa5f;
 }
 
@@ -1958,13 +1963,42 @@ label {
 
 
 /*LOGIN CONFIGURATION PAGE*/
-.form-login, .track-list{
+.form-login {
     max-width: 330px;
     margin: 100px auto 0;
     background: #fff;
     border-radius: 5px;
     -webkit-border-radius: 5px;
 }
+
+
+.track-list{
+    float:top;
+    max-width: 330px;
+    margin: 100px auto 0;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.track-list2{
+    float:left;
+    max-width: 330px;
+    margin: 100px auto 0;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.track-list3{
+    float:right;
+    max-width: 330px;
+    margin: 100px auto 0;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
 .form-login h2.form-login-heading{
     margin: 0;
     padding: 25px 20px;
@@ -1990,6 +2024,40 @@ label {
     text-transform: uppercase;
     font-weight: 300;
 }
+
+.track-list2 h2.form-login-heading{
+    margin: 0;
+    padding: 25px 20px;
+    text-align: center;
+    background: #68dff0;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.track-list3 h2.form-login-heading{
+    margin: 0;
+    padding: 25px 20px;
+    text-align: center;
+    background: #68dff0;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.chart-wrap {
+    float:right;
+    margin-left:auto;
+    margin-right:auto;
+    
+}
+
 .login-wrap {
     padding: 20px;
 }
@@ -2278,6 +2346,12 @@ label {
     background: #68dff0;
     color: #fff;
     padding: 10px 0;
+    float: bottom;
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    margin-top: -3em;
 }
 
 

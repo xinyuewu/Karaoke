@@ -7,7 +7,7 @@
 
     <body>
         <section class="container">
-            <%@include file="includes/header.jsp"%>
+           <!-- <%@include file="includes/header.jsp"%>   -->
             <div id="login-page">
                 <div class="container">
                     <form class="form-login" action="Login" method="POST">
@@ -17,8 +17,9 @@
                             <input type="text" name="username" class="form-control" placeholder="Username" autofocus>
                             <br />
                             <input type="password" name="password" class="form-control" placeholder="Password">
-                            <hr />
+                            <br />
                             <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
+                            <hr>
                             <div class="registration">
                                 Don't have an account yet?<br/>
                                 <a class="" href="register.jsp">
@@ -56,7 +57,7 @@
         <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
         <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
         <script>
-            $.backstretch("assets/img/login-bg.jpg", {speed: 500});
+            $.backstretch("assets/img/bg1.jpg", {speed: 500});
         </script>
     </body>
 </html>
