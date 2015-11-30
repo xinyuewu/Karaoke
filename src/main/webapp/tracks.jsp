@@ -24,6 +24,7 @@
             </div>
             <br />
 
+            <%if (topTracks != null) {%>
             <div class="track-list">
                 <h2 class="form-login-heading">Top tracks</h2>
                 <div class="track-wrap">
@@ -35,6 +36,7 @@
                     <%}%>
                 </div>          
             </div>
+            <%}%>
         </section>
     </body>
 </html>
