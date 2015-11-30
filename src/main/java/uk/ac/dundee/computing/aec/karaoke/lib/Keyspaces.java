@@ -41,8 +41,8 @@ public final class Keyspaces {
                     + " trackID uuid, \n"
                     + " name varchar, \n"
                     + " total int, \n"
-                    + " PRIMARY KEY (trackID)"
-                    + ") WITH CLUSTERING ORDER BY (total) DESC";
+                    + " PRIMARY KEY (trackID, total)"
+                    + ") WITH CLUSTERING ORDER BY (total desc)";
 
             Session session = c.connect();
             System.out.println("Creating keyspace ");
