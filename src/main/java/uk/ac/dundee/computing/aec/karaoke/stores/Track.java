@@ -10,7 +10,7 @@ public class Track {
     private String type;
     private java.util.UUID UUID=null;
     private String name;
-    
+    private Likes likes;
     //constructor
     public void Track(){
     }//end constructor
@@ -18,6 +18,14 @@ public class Track {
     public void setUUID(java.util.UUID UUID){
         this.UUID =UUID;
     }//end setUUID()
+    
+    public void setLikes(Likes likes){
+        this.likes = likes;
+    }
+    
+    public Likes getLikes(){
+        return this.likes;
+    }
     
     public String getSUUID(){
         return UUID.toString();

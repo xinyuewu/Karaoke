@@ -19,7 +19,7 @@
                 <a href="/Karaoke/Upload">Upload Track</a>
             </li>
             <li class="dropdown">
-                <a href="#">Statistics</a>
+                <a href="/Karaoke/Stats">Statistics</a>
             </li>
     </div>
     <div class="top-menu">

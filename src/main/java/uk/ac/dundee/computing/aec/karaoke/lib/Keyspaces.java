@@ -42,7 +42,16 @@ public final class Keyspaces {
                     + " name varchar, \n"
                     + " total int, \n"
                     + " PRIMARY KEY (trackID)"
-                    + ") WITH CLUSTERING ORDER BY (total) DESC";
+                    +")"
+                    +" WITH CLUSTERING ORDER BY (total) DESC ";
+            
+             String CreatePlayTable = "CREATE TABLE if not exists spotify.Played ("
+                    + " user varchar,"
+                    + " trackID uuid, "
+                    + " interaction_time timestamp,"
+                    + " date text,"
+                    + " PRIMARY KEY (trackID,interaction_time)"
+                    + ")";
 
             Session session = c.connect();
             System.out.println("Creating keyspace ");
@@ -89,6 +98,13 @@ public final class Keyspaces {
                 System.out.println("Created likes table");
             } catch (Exception et) {
                 System.out.println("Can't create likes table" + et);
+            }
+             try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreatePlayTable);
+                session.execute(cqlQuery);
+                System.out.println("Created plays table");
+            } catch (Exception et) {
+                System.out.println("Can't create plays table" + et);
             }
             session.close();
         } catch (Exception et) {

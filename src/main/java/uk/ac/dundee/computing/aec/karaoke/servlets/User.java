@@ -60,8 +60,8 @@ public class User extends HttpServlet {
         String email = sanitise(request.getParameter("email"));
         String age = sanitise(request.getParameter("age"));
         String street = sanitise(request.getParameter("street"));
-        String city =sanitise(request.getParameter("city"));
-        String zip =sanitise(request.getParameter("zip"));
+        String city = sanitise(request.getParameter("city"));
+        String zip = sanitise(request.getParameter("zip"));
 
         switch (command) {
             /* /Register */
@@ -116,7 +116,7 @@ public class User extends HttpServlet {
             case 3:
                 if (firstname == null || lastname == null || email == null || username == null
                         || street == null || zip == null || city == null || age == null) {
-                    response.sendRedirect("/Karaoke/");
+                    response.sendRedirect("/Karaoke/Music");
                 } else {
                     us.updateUser(username, firstname, lastname, email, street, city, zip);
                     response.sendRedirect("/Karaoke/User/" + username);
@@ -128,34 +128,40 @@ public class User extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        args = Convertors.SplitRequestPath(request);
-        us.setCluster(cluster);
-        int command;
-        try {
-            command = (Integer) URLmap.get(args[1]);
-        }//end try
-        catch (Exception e) {
-            error("Bad request", response);
-            return;
-        }//end catch
+        LoggedIn li = (LoggedIn) request.getSession().getAttribute("LoggedIn");
+        if (li == null) {
+            response.sendRedirect("/Karaoke/login.jsp");
+        } else {
 
-        switch (command) {
-            case 3:
-                if (args.length != 3) {
-                    break;
-                } else {
-                    String username = args[2];
-                    if (us.userExist(username)) {
-                        Person p = us.getUser(username);
-                        rd = request.getRequestDispatcher("/profile.jsp");
-                        request.setAttribute("person", p);
-                        rd.forward(request, response);
+            args = Convertors.SplitRequestPath(request);
+            us.setCluster(cluster);
+            int command;
+            try {
+                command = (Integer) URLmap.get(args[1]);
+            }//end try
+            catch (Exception e) {
+                error("Bad request", response);
+                return;
+            }//end catch
+
+            switch (command) {
+                case 3:
+                    if (args.length != 3) {
+                        break;
+                    } else {
+                        String username = args[2];
+                        if (us.userExist(username)) {
+                            Person p = us.getUser(username);
+                            rd = request.getRequestDispatcher("/profile.jsp");
+                            request.setAttribute("person", p);
+                            rd.forward(request, response);
+                        } else {
+                            response.sendRedirect("/Karaoke/Music");
+                        }
+                        break;
                     }
-                    else
-                        response.sendRedirect("/Karaoke/");
-                    break;
-                }
-        }//end switch
+            }//end switch
+        }
     }//end doGet
 
     @Override
