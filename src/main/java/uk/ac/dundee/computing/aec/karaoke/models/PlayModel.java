@@ -44,12 +44,12 @@ public class PlayModel {
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
         Date adate = new Date();
         Date aWeek = DateUtils.addDays(new Date(),-7);
-      //String newdate = new SimpleDateFormat("yyyy-MM-dd").format(adate);
+        Date day = DateUtils.addDays(new Date(),-1);
+        Date aMinute = DateUtils.addMinutes(new Date(), -1);
         Session session = cluster.connect("spotify");
         PreparedStatement psGetPlay = session.prepare("select trackid, date from Played where trackid = ? and interaction_time > ? and interaction_time <= ?");
             BoundStatement bsInsertPic = new BoundStatement(psGetPlay);
-            record = session.execute(bsInsertPic.bind(track,aWeek,adate));
-        //Integer i = 0;    
+            record = session.execute(bsInsertPic.bind(track,aWeek,adate));   
         if (!record.isExhausted()) {
            for (Row row : record) {
                if(hmap.containsKey(row.getUUID("trackid").toString()+"_"+row.getString("date"))){
