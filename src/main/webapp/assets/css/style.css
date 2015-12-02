@@ -14,8 +14,9 @@ body {
     color: #797979;
     background: #A4AABA;
     font-family: 'Ruda', sans-serif;
-  //  padding: 0px !important;
-   // margin: 0px !important;
+    // background-image: url("../img/karaheader.png");
+    padding: 0px !important;
+    margin: 0px !important;
     font-size:13px;
 }
 
@@ -413,13 +414,14 @@ ul.sidebar-menu li a.active i {
 }
 
 .black-bg {
-    background: #ffd111;
+    background: #f2f2f2;
     height: 50px;
-    background-image: url("../img/karaheader.png");
+    background-image: url("../img/oo.png");
     background-position: center center;
     background-size: cover;
     //background: #ffd000;
     border-bottom: 1px solid #c9aa5f;
+    color: #000;
 }
 
 .wrapper {
@@ -473,11 +475,11 @@ a.logo span {
 }
 
 ul.top-menu > li > a {
-    color: #666666;
+    color: #000;
     font-size: 16px;
-    border-radius: 4px;
+    border-radius: 0px;
     -webkit-border-radius: 4px;
-    border:1px solid #666666 !important;
+    border:0px solid #000 !important;
     padding: 2px 6px;
     margin-right: 50px;
 }
@@ -490,6 +492,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     border-radius: 4px;
     -webkit-border-radius: 4px;
     color: #b6b6b6 !important;
+    // border:0px  !important;
 }
 
 .notify-row .badge {

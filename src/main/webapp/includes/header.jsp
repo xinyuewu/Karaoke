@@ -6,7 +6,7 @@
          username = li.getUsername();
 %>
 <header class="header black-bg">
-    <a href="#" class="logo"><b>Cassandrify!</b></a>
+    <a href="#" class="logo" style="color :#000;" ><b>Cassandrify</b></a>
     <div class="nav notify-row" id="top_menu">
         <ul class="nav top-menu">
             <li class="dropdown">

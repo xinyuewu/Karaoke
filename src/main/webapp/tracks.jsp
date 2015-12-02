@@ -42,6 +42,12 @@
             <br><br>
         </section>
             <br><br>
+            <script src="assets/js/jquery.js"></script>
+            <script src="assets/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+            <script>
+               $.backstretch("assets/img/karaheader.png", {speed: 500});
+            </script>
                 <%//@include file="footer.jsp"%>        
     </body>
      

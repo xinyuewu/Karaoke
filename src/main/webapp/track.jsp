@@ -52,5 +52,11 @@
         </section>
         <script src="/Karaoke/assets/js/jquery.js"></script>
         <script src="/Karaoke/assets/js/trackFunctions.js"></script>
+        <script src="/Karaoke/assets/js/jquery.js"></script>
+        <script src="/Karaoke/assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/Karaoke/assets/js/jquery.backstretch.min.js"></script>
+        <script>
+               $.backstretch("/Karaoke/assets/img/karaheader.png", {speed: 500});
+        </script>
     </body>
 </html>
