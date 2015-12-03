@@ -9,7 +9,8 @@
     <%@include file="includes/validateLogin.jsp"%>
     <head>
         <%@include file="includes/head.jsp"%>
-        <title>All tracks</title>
+        <title>Profile</title>
+        
     </head>
     <body>
         <%  Person p = (Person) request.getAttribute("person");
@@ -18,6 +19,7 @@
         %>
         <section class="container">
             <%@include file="includes/header.jsp"%>
+           
             <form class="form-login" method="POST" action="User">
                 <h2 class="form-login-heading">Your Information</h2>
                 <div class="login-wrap">
@@ -48,5 +50,14 @@
                 </div>
             </form>
         </section>
+        <script src="/Karaoke/assets/js/jquery.js"></script>
+        <script src="/Karaoke/assets/js/trackFunctions.js"></script>
+        <script src="/Karaoke/assets/js/jquery.js"></script>
+        <script src="/Karaoke/assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/Karaoke/assets/js/jquery.backstretch.min.js"></script>
+        <script>
+               $.backstretch("/Karaoke/assets/img/karaheader.png", {speed: 500});
+        </script>
     </body>
+    
 </html>

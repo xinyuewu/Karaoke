@@ -5,6 +5,7 @@
     <%@include file="includes/validateLogin.jsp"%>
     <head>
         <%@include file="includes/head.jsp"%>
+        
         <title>All tracks</title>
     </head>
     <body>
@@ -12,8 +13,8 @@
             <%@include file="includes/header.jsp"%>
             <%java.util.LinkedList<Track> tracks = (java.util.LinkedList<Track>) request.getAttribute("tracks");%>
             <%java.util.LinkedList<Track> topTracks = (java.util.LinkedList<Track>) request.getAttribute("topTracks");%>
-
-            <div class="track-list">
+            
+            <div class="track-list2">
                 <h2 class="form-login-heading">All tracks</h2>
                 <div class="track-wrap">
                     <%for (Track t : tracks) {
@@ -22,10 +23,10 @@
                     <%}%>
                 </div>          
             </div>
-            <br />
+            
 
-            <%if (topTracks != null) {%>
-            <div class="track-list">
+            <%if(topTracks!=null){%>
+            <div class="track-list3">
                 <h2 class="form-login-heading">Top tracks</h2>
                 <div class="track-wrap">
                     <%for (Track t : topTracks) {
@@ -34,9 +35,20 @@
                     Likes: <%=t.getLikes().getTotalLikes()%>
                     <br />
                     <%}%>
-                </div>          
+                </div>    
+                
             </div>
-            <%}%>
+                <%}%>
+            <br><br>
         </section>
+            <br><br>
+            <script src="assets/js/jquery.js"></script>
+            <script src="assets/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+            <script>
+               $.backstretch("assets/img/karaheader.png", {speed: 500});
+            </script>
+                <%//@include file="footer.jsp"%>        
     </body>
+     
 </html>
